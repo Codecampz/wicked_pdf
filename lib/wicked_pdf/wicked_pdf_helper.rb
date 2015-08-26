@@ -34,7 +34,8 @@ module WickedPdfHelper
   end
 
   module Assets
-    ASSET_URL_REGEX = /url\(['"]([^'"]+)['"]\)(.+)/
+    # ASSET_URL_REGEX = /url\(['"]([^'"]+)['"]\)(.+)/
+    ASSET_URL_REGEX = /url\(['"](.+)['"]\)(.+)/
 
     def wicked_pdf_stylesheet_link_tag(*sources)
       stylesheet_contents = sources.collect do |source|
@@ -85,7 +86,7 @@ module WickedPdfHelper
           File.join(Rails.public_path, asset_path(source).sub(/\A#{Rails.application.config.action_controller.relative_url_root}/, ''))
         end
       else
-        Rails.application.assets.find_asset(source).pathname
+        Rails.application.assets.find_asset(source).try(:pathname)
       end
     end
 
